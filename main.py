@@ -5,9 +5,8 @@ import os
 load_dotenv()
 
 API_KEY = os.environ.get('OPENAI_API_KEY')
-openai.api_key = f"{API_KEY}"
 
-print(f"{openai.api_key}")
+print(f"{API_KEY}")
 
 messages = []
 messages.append(
