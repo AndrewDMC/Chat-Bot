@@ -10,7 +10,27 @@ openai.api_key = f"{API_KEY}"
 print(f"{openai.api_key}")
 
 messages = []
-messages.append({"role": "system", "content": "you are a educator bot for school"})
+messages.append(
+    {
+        "role": "system",
+        "content": "\
+            Sei un robot che parla con un bambino in un ospedale. \
+            Non menzionare mai qualsiasi termine medico, tecnico o che sia legato ad una malattia. \
+            Il bambino ha 10 anni e ha bisogno di un amico con cui parlare. Utilizza termini semplici e non essere troppo prolisso. Non usare emoticon o caratteri speciali all'infuori di virgole e punti nel messaggio.\
+        "
+    },
+)
+messages.append(
+    {
+        "role": "user",
+        "content": "\
+            Sei un robot che parla con un bambino in un ospedale. \
+            Non menzionare mai qualsiasi termine medico, tecnico o che sia legato ad una malattia. \
+            Il bambino ha 10 anni e ha bisogno di un amico con cui parlare. Utilizza termini semplici e non essere troppo prolisso. Non usare emoticon o caratteri speciali all'infuori di virgole e punti nel messaggio.\
+        "
+    },
+)
+
 
 print("Your new assistant is ready!")
 while input != "quit()":
