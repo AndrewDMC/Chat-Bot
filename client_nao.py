@@ -1,7 +1,3 @@
-#Programmer: Ciarrocchi Christian
-#Created: 27/05/2022
-#Default Yun IP: 192.168.1.255, default port: 7891
-
 import socket #nao is a client
 import time
 
@@ -20,10 +16,14 @@ class MyClass(GeneratedClass):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((HOST, PORT))
         s.send("Hello".encode("utf-8"))
+        id = self.tts.pCall("say", str("Sono pronto"))
 
         while True:
             data = s.recv(1024)
-            print("Received: " + data.decode("utf-8"))
+            received = data.decode("utf-8")
+            print("Received: " + received)
+            id = self.tts.pCall("say", str(received))
+            
         sock.close()
         # put initialization code here
         pass
