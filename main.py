@@ -5,6 +5,7 @@ import socket
 
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 9000
+VOICE_PORT = 9001
 
 def main():
     load_dotenv()
@@ -12,13 +13,24 @@ def main():
     API_KEY = os.environ.get("OPENAI_API_KEY")
     openai.api_key = API_KEY
 
+    v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    v.bind((HOST, VOICE_PORT))
+    v.listen()
+
+    print(f"Listening for Voice on {HOST}:{VOICE_PORT}...")
+
+    connv, addrv = v.accept()
+    message = connv.recv(1024)
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen()
-    print(f"Listening on {HOST}:{PORT}...")
+    
+    print(f"Listening for NAO on {HOST}:{PORT}...")
 
     conn, addr = s.accept()
     message = conn.recv(1024)
+    
     print("Received " + message.decode("utf-8"))
     conn.send("Welcome to NAO Chat!".encode("utf-8"))
 
@@ -49,7 +61,7 @@ def main():
         print(f"Connected to {addr[0]}:{addr[1]}")
 
         while True:
-            data = conn.recv(1024)
+            data = connv.recv(1024)
 
             messages.append(
                 {
@@ -69,5 +81,6 @@ def main():
             openai_response = response["choices"][0]["message"]["content"]
             print(f"\n{openai_response}\n")
             conn.send(openai_response.encode("utf-8"))
+            
 if __name__ == "__main__":
     main()
