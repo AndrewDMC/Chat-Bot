@@ -1,6 +1,6 @@
 import socket
 
-HOST = socket.gethostbyname(socket.gethostname())
+HOST = "192.168.66.68"
 PORT = 9000
 
 def main():
@@ -11,9 +11,6 @@ def main():
     while True:
         data = s.recv(1024)
         print("Received: " + data.decode("utf-8"))
-
-        message = input("Message: ")
-        s.send(message.encode("utf-8"))
 
 if __name__ == "__main__":
     main()
