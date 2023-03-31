@@ -1,21 +1,14 @@
 import openai
+from deep_translator import MyMemoryTranslator
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 def moderation(input):
-
-    response = openai.Completion.create(
-    model="text-davinci-003",
-    prompt="translate this text from italian to english: " + input,
-    temperature=0,
-    max_tokens=60
-    )
-
-    translated_text = response["choices"][0]["text"]
-
+    translated = MyMemoryTranslator(source="it", target="en").translate(text=input)
+    print(translated)
     response = openai.Moderation.create(
-        translated_text,
+        translated,
     )
     return response["results"][0]["flagged"]
 
