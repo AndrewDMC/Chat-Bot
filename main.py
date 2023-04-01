@@ -1,18 +1,37 @@
-from dotenv import load_dotenv
+
 import openai
 import os
 import socket
+import speech_recognition as sr
 
 HOST = socket.gethostbyname(socket.gethostname())
+print(HOST)
 PORT = 9000
 VOICE_PORT = 9001
+FILENAME="output.wav"
 
+def stt():
+	# Initialize recognizer
+	r = sr.Recognizer()
+	r.pause_threshold = 1
+	# Record audio
+	with sr.Microphone() as source:
+		print("Say something!")
+		r.adjust_for_ambient_noise(source, 0.5)
+		audio = r.listen(source, phrase_time_limit=5, snowboy_configuration=None)
+	# Save audio to file
+	with open(FILENAME, "wb") as f:
+		f.write(audio.get_wav_data())
+  
+	audio_file = open(FILENAME, "rb")
+	transcript = openai.Audio.transcribe("whisper-1", audio_file)
+	return transcript["text"]
 def main():
-    load_dotenv()
+    
 
-    API_KEY = os.environ.get("OPENAI_API_KEY")
+    API_KEY = "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"
     openai.api_key = API_KEY
-
+    '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     v.bind((HOST, VOICE_PORT))
     v.listen()
@@ -21,7 +40,7 @@ def main():
 
     connv, addrv = v.accept()
     message = connv.recv(1024)
-
+    '''
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen()
@@ -45,7 +64,7 @@ def main():
             "
         },
     )
-
+    '''
     messages.append(
         {
             "role": "user",
@@ -56,23 +75,27 @@ def main():
             "
         },
     )
-
+    '''
     with conn:
         print(f"Connected to {addr[0]}:{addr[1]}")
-
+        i=0
+        j=3
         while True:
-            data = connv.recv(1024)
-
+            print("cosa dire?")
+            data = stt()
+            print(data)
+            i=i+1
             messages.append(
                 {
                     "role": "user",
-                    "content": data.decode("utf-8")
+                    "content": data
                 }
             )
             
             if not data:
                 break
             
+                
             response = openai.ChatCompletion.create(
                 model = "gpt-3.5-turbo",
                 messages = messages
@@ -80,6 +103,10 @@ def main():
 
             openai_response = response["choices"][0]["message"]["content"]
             print(f"\n{openai_response}\n")
+            if i==j:
+                messages.pop[1]
+                i=0
+                
             conn.send(openai_response.encode("utf-8"))
             
 if __name__ == "__main__":
