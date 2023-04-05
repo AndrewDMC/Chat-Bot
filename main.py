@@ -5,7 +5,6 @@ import socket
 import speech_recognition as sr
 
 HOST = socket.gethostbyname(socket.gethostname())
-print(HOST)
 PORT = 9000
 VOICE_PORT = 9001
 FILENAME="output.wav"
@@ -29,7 +28,7 @@ def stt():
 def main():
     
 
-    API_KEY = "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"
+    API_KEY = "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"
     openai.api_key = API_KEY
     '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
