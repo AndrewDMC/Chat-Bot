@@ -25,9 +25,8 @@ def stt():
 	audio_file = open(FILENAME, "rb")
 	transcript = openai.Audio.transcribe("whisper-1", audio_file)
 	return transcript["text"]
-def main():
-    
 
+def main():
     API_KEY = "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"
     openai.api_key = API_KEY
     '''
