@@ -30,7 +30,7 @@ def stt():
 
 
 def main():
-    API_KEY = "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"
+    API_KEY = "   "
     openai.api_key = API_KEY
     '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -80,34 +80,41 @@ def main():
     with conn:
         print(f"Connected to {addr[0]}:{addr[1]}")
         i = 0
-        j = 3
+        j = 5
         while True:
             print("cosa dire?")
-            data = stt()
-            print(data)
-            i = i + 1
-            messages.append(
-                {
-                    "role": "user",
-                    "content": data
-                }
-            )
+            message = conn.recv(1024)
+            if(message.decode("utf-8") == "listen now"):
 
-            if not data:
-                break
+                data = stt()
+                print(data)
+                
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": data
+                    }
+                )
 
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=messages
-            )
+                if not data:
+                    pass
+                else:
+                    i = i + 1
 
-            openai_response = response["choices"][0]["message"]["content"]
-            print(f"\n{openai_response}\n")
-            if i == j:
-                messages.pop[1]
-                i = 0
+                    response = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=messages
+                    )
 
-            conn.send(openai_response.encode("utf-8"))
+                    openai_response = response["choices"][0]["message"]["content"]
+                    print(f"\n{openai_response}\n")
+                    if i == j:
+                        messages.pop(1)
+                        i = 0
+
+                    conn.send(openai_response.encode("utf-8"))
+
+                    message=""
 
 
 if __name__ == "__main__":

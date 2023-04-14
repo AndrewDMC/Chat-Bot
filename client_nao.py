@@ -1,7 +1,8 @@
+import sys
 import socket #nao is a client
 import time
 
-HOST = "192.168.66.68"
+HOST = "169.254.115.152"
 PORT = 9000
 
 class MyClass(GeneratedClass):
@@ -17,13 +18,20 @@ class MyClass(GeneratedClass):
         s.connect((HOST, PORT))
         s.send("Hello".encode("utf-8"))
         id = self.tts.pCall("say", str("Sono pronto"))
+        movement= "contextual"
 
         while True:
             data = s.recv(1024)
             received = data.decode("utf-8")
             print("Received: " + received)
-            id = self.tts.pCall("say", str(received))
-            
+            if(received == "arrivederci" or received == "arrivederci."):
+                sys.exit(0)
+            id = self.tts.post.say(str(received), {"speakingMovementMode":movement})
+            #id = self.tts.pCall("say", str(received))
+            self.tts.wait(id, 0)
+            #comunica con host
+            s.send("listen now".encode("utf-8"))
+
         sock.close()
         # put initialization code here
         pass
