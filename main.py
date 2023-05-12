@@ -30,7 +30,7 @@ def stt():
 
 
 def main():
-    API_KEY = ""
+    API_KEY = "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"
     openai.api_key = API_KEY
     '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,7 +60,7 @@ def main():
             "role": "system",
             "content": "\
                 Sei un robot che parla con un bambino in un ospedale. \
-                Non menzionare mai qualsiasi termine medico, tecnico o che sia legato ad una malattia. \
+                Non menzionare mai qualsiasi termine medico, tecnico o che sia legato ad una malattia. Parla solo Italiano. \
                 Il bambino ha 10 anni e ha bisogno di un amico con cui parlare. Utilizza termini semplici e non essere troppo prolisso. Non usare emoticon o caratteri speciali all'infuori di virgole e punti nel messaggio.\
             "
         },
