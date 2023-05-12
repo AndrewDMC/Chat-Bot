@@ -30,7 +30,7 @@ def stt():
 
 
 def main():
-    API_KEY = "   "
+    API_KEY = ""
     openai.api_key = API_KEY
     '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

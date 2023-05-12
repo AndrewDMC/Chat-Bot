@@ -26,7 +26,7 @@ class MyClass(GeneratedClass):
             print("Received: " + received)
             if(received == "arrivederci" or received == "arrivederci."):
                 sys.exit(0)
-            id = self.tts.post.say(str(received), {"speakingMovementMode":movement})
+            id = self.tts.pCall("say", str(received))
             #id = self.tts.pCall("say", str(received))
             self.tts.wait(id, 0)
             #comunica con host
