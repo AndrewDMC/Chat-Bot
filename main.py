@@ -3,6 +3,9 @@ import openai
 import os
 import socket
 import speech_recognition as sr
+from dotenv import load_dotenv
+
+load_dotenv()
 
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 9000
@@ -30,7 +33,7 @@ def stt():
 
 
 def main():
-    API_KEY = "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"
+    API_KEY = os.environ.get("OPENAI_API_KEY")
     openai.api_key = API_KEY
     '''
     v = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
